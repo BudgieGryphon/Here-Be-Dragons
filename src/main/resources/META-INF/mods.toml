@@ -1,0 +1,24 @@
+modLoader="javafml" 
+loaderVersion="[36,)" 
+license="All rights reserved"
+[[mods]]
+modId="talod"
+version="0.1"
+displayName="That's a Lot of Dragons" 
+authors="BudgieGryphon"
+description='''
+A Minecraft mod centered around adventure, combat, and dragons.
+'''
+
+[[dependencies.talod]]
+    modId="forge" 
+    mandatory=true
+    versionRange="[36,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.talod]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.16.5]"
+    ordering="NONE"
+    side="BOTH"
