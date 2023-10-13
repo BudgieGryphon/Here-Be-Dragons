@@ -97,10 +97,14 @@ public class SweetberryDragonEntity extends AnimalEntity implements IAnimatable,
 			super.doPush(p_82167_1_);
 		}
 	}
+	public boolean canBeLeashed(PlayerEntity player) {
+		return true;
+	}
 	protected float getStandingEyeHeight(Pose pose, EntitySize size) {
 		return size.height * 0.5F;
 	}
 
+	//yoink.
 	public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
 		ItemStack itemstack = player.getItemInHand(hand);
 		if (!this.level.isClientSide) {
