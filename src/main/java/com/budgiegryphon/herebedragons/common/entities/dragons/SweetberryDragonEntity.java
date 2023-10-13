@@ -108,9 +108,6 @@ public class SweetberryDragonEntity extends AnimalEntity implements IAnimatable,
 				this.setInLove(player);
 				itemstack.shrink(1);
 			}
-			else if (itemstack.getItem() == Items.LEAD){
-				return ActionResultType.sidedSuccess(this.level.isClientSide);
-			}
 			else {
 				ItemStack itemstack1 = new ItemStack(FoodInit.sweetberrydrgitem.get());
 				if(hasCustomName()) {
@@ -185,11 +182,6 @@ public class SweetberryDragonEntity extends AnimalEntity implements IAnimatable,
 			Vector3d vector3d2 = RandomPositionGenerator.getAboveLandPos(SweetberryDragonEntity.this, 8, 7, vector3d, ((float)Math.PI / 2F), 2, 1);
 			return vector3d2 != null ? vector3d2 : RandomPositionGenerator.getAirPos(SweetberryDragonEntity.this, 8, 4, -2, vector3d, ((float)Math.PI / 2F));
 		}
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	public Vector3d getLeashOffset() {
-		return new Vector3d(0.0D, (0.5F * this.getEyeHeight()),(this.getBbWidth() * 0.2F));
 	}
 }
 
