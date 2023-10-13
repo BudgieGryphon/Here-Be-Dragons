@@ -1,9 +1,0 @@
-{
-    "type": "minecraft:smelting",
-    "ingredient": {
-        "item": "talod:sweetberrydrgitem"
-    },
-    "result": "talod:cookedsweetberrydrg",
-    "experience": 0.1,
-    "cookingtime": 200
-}

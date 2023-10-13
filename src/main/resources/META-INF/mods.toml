@@ -2,21 +2,21 @@ modLoader="javafml"
 loaderVersion="[36,)" 
 license="All rights reserved"
 [[mods]]
-modId="talod"
+modId="herebedragons"
 version="0.1"
-displayName="That's a Lot of Dragons" 
+displayName="Here Be Dragons"
 authors="BudgieGryphon"
 description='''
 A Minecraft mod centered around adventure, combat, and dragons.
 '''
 
-[[dependencies.talod]]
+[[dependencies.herebedragons]]
     modId="forge" 
     mandatory=true
     versionRange="[36,)"
     ordering="NONE"
     side="BOTH"
-[[dependencies.talod]]
+[[dependencies.herebedragons]]
     modId="minecraft"
     mandatory=true
     versionRange="[1.16.5]"
