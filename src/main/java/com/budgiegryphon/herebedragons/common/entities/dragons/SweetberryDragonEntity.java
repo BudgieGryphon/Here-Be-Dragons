@@ -65,8 +65,8 @@ public class SweetberryDragonEntity extends AnimalEntity implements IAnimatable,
 		return EntityTypeInit.SWEETBERRYDRAGON_ENTITY.get().create(world);
 	}
 	@SuppressWarnings("deprecation")
-	public float getWalkTargetValue(BlockPos p_205022_1_, IWorldReader p_205022_2_) {
-		return p_205022_2_.getBlockState(p_205022_1_).isAir() ? 10.0F : 1.0F;
+	public float getWalkTargetValue(BlockPos pPos, IWorldReader pLevel) {
+		return pLevel.getBlockState(pPos).isAir() ? 10.0F : 1.0F;
 	}
 
 	@Override
@@ -84,21 +84,18 @@ public class SweetberryDragonEntity extends AnimalEntity implements IAnimatable,
 		return 1;
 	}
 
-	public boolean causeFallDamage(float p_225503_1_, float p_225503_2_) {
+	public boolean causeFallDamage(float pFallDistance, float pDamageMultiplier) {
 		return false;
 	}
-	protected void checkFallDamage(double p_184231_1_, boolean p_184231_3_, BlockState p_184231_4_, BlockPos p_184231_5_) {
+	protected void checkFallDamage(double pY, boolean pOnGround, BlockState pState, BlockPos pPos) {
 	}
 	public boolean isPushable() {
 		return true;
 	}
-	protected void doPush(Entity p_82167_1_) {
-		if (!(p_82167_1_ instanceof PlayerEntity)) {
-			super.doPush(p_82167_1_);
+	protected void doPush(Entity entity) {
+		if (!(entity instanceof PlayerEntity)) {
+			super.doPush(entity);
 		}
-	}
-	public boolean canBeLeashed(PlayerEntity player) {
-		return true;
 	}
 	protected float getStandingEyeHeight(Pose pose, EntitySize size) {
 		return size.height * 0.5F;
@@ -146,11 +143,11 @@ public class SweetberryDragonEntity extends AnimalEntity implements IAnimatable,
 	public AnimationFactory getFactory() {
 		return this.factory;
 	}
-	protected PathNavigator createNavigation(World p_175447_1_) {
-		FlyingPathNavigator flyingpathnavigator = new FlyingPathNavigator(this, p_175447_1_) {
+	protected PathNavigator createNavigation(World pLevel) {
+		FlyingPathNavigator flyingpathnavigator = new FlyingPathNavigator(this, pLevel) {
 			@SuppressWarnings("deprecation")
-			public boolean isStableDestination(BlockPos p_188555_1_) {
-				return !this.level.getBlockState(p_188555_1_.below()).isAir();
+			public boolean isStableDestination(BlockPos pPos) {
+				return !this.level.getBlockState(pPos.below()).isAir();
 			}
 		};
 		flyingpathnavigator.setCanOpenDoors(false);

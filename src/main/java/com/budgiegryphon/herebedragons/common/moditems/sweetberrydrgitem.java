@@ -12,14 +12,14 @@ import net.minecraft.world.World;
 
 public class sweetberrydrgitem extends Item{
 
-    public sweetberrydrgitem(Item.Properties p_i48487_1_) {
-        super(p_i48487_1_);
+    public sweetberrydrgitem(Item.Properties properties) {
+        super(properties);
     }
-    public ActionResultType useOn(ItemUseContext here) {
-        World world = here.getLevel();
-        ItemStack itemstack = here.getItemInHand();
+    public ActionResultType useOn(ItemUseContext pContext) {
+        World world = pContext.getLevel();
+        ItemStack itemstack = pContext.getItemInHand();
         if (!world.isClientSide) {
-            BlockPos blockpos = here.getClickedPos();
+            BlockPos blockpos = pContext.getClickedPos();
             SweetberryDragonEntity entity = EntityTypeInit.SWEETBERRYDRAGON_ENTITY.get().create(world);
             if (itemstack.hasCustomHoverName()) {
                 entity.setCustomName(itemstack.getHoverName());

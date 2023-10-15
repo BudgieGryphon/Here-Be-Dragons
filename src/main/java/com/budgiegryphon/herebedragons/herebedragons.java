@@ -45,7 +45,7 @@ public class herebedragons
 
     public static class HBDGroup extends ItemGroup {
         public HBDGroup(String label) {
-            super("Here Be Dragons");
+            super("label");
         }
 
         @Override
