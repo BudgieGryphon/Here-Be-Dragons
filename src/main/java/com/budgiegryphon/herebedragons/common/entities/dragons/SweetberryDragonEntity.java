@@ -4,6 +4,7 @@ import java.util.EnumSet;
 
 import javax.annotation.Nullable;
 
+import com.budgiegryphon.herebedragons.common.entities.ai.DragonSleepGoal;
 import com.budgiegryphon.herebedragons.core.init.EntityTypeInit;
 import com.budgiegryphon.herebedragons.core.init.FoodInit;
 
@@ -13,10 +14,7 @@ import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.FlyingMovementController;
-import net.minecraft.entity.ai.goal.BreedGoal;
-import net.minecraft.entity.ai.goal.FollowMobGoal;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.TemptGoal;
+import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.IFlyingAnimal;
 import net.minecraft.entity.player.PlayerEntity;
@@ -43,10 +41,15 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 
 public class SweetberryDragonEntity extends AnimalEntity implements IAnimatable, IFlyingAnimal{
-	private final AnimationFactory factory = new AnimationFactory(this);
+	protected static final AnimationBuilder FLY = new AnimationBuilder().addAnimation("animation.berrydragon.fly", true);
+	protected static final AnimationBuilder SLEEP = new AnimationBuilder().addAnimation("animation.berrydragon.sleep", true);
+	protected static final AnimationBuilder IDLE = new AnimationBuilder().addAnimation("animation.berrydragon.idle", true);
+
+	private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
 	public SweetberryDragonEntity(EntityType<? extends AnimalEntity> type, World worldIn) {
 		super(type, worldIn);
@@ -60,7 +63,29 @@ public class SweetberryDragonEntity extends AnimalEntity implements IAnimatable,
 		return MobEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 5.0D).add(Attributes.FLYING_SPEED, 0.4D).add(Attributes.MOVEMENT_SPEED, 0.3F);
 
 	}
+	@Override
+	public void registerControllers(final AnimationData data) {
+		data.addAnimationController(new AnimationController<>(this, "berrydragon", 5, this::AnimController));
+	}
 
+	protected <E extends SweetberryDragonEntity> PlayState AnimController(final AnimationEvent<E> event) {
+		if (this.isSleeping()) {
+			event.getController().setAnimation(SLEEP);
+		}
+		else {
+			if (event.isMoving()) {
+				event.getController().setAnimation(FLY);
+			}
+			else {
+				event.getController().setAnimation(IDLE);
+			}
+		}
+		return PlayState.CONTINUE;
+	}
+	@Override
+	public AnimationFactory getFactory() {
+		return this.factory;
+	}
 	public AgeableEntity getBreedOffspring(ServerWorld world, AgeableEntity entity) {
 		return EntityTypeInit.SWEETBERRYDRAGON_ENTITY.get().create(world);
 	}
@@ -73,10 +98,12 @@ public class SweetberryDragonEntity extends AnimalEntity implements IAnimatable,
 	protected void registerGoals() {
 		super.registerGoals();
 
-		this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
-		this.goalSelector.addGoal(2, new TemptGoal(this, 1.25D, Ingredient.of(Items.SWEET_BERRIES), false));
-		this.goalSelector.addGoal(3, new SweetberryDragonEntity.WanderGoal());
-		this.goalSelector.addGoal(4, new FollowMobGoal(this, 1.0D, 3.0F, 7.0F));
+		this.goalSelector.addGoal(0, new PanicGoal(this, 1.5D));
+		this.goalSelector.addGoal(1, new DragonSleepGoal(this, sleepCondition()));
+		this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
+		this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(Items.SWEET_BERRIES), false));
+		this.goalSelector.addGoal(4, new SweetberryDragonEntity.WanderGoal());
+		this.goalSelector.addGoal(5, new FollowMobGoal(this, 1.0D, 3.0F, 7.0F));
 
 	}
 	protected int getExperiencePoints(PlayerEntity player)
@@ -126,22 +153,14 @@ public class SweetberryDragonEntity extends AnimalEntity implements IAnimatable,
 		return ActionResultType.sidedSuccess(this.level.isClientSide);
 	}
 
-	private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-		if (event.isMoving()) {
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.berrydragon.fly", true));
-			return PlayState.CONTINUE;
-		}
 
-		event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.berrydragon.idle", true));
-		return PlayState.CONTINUE;
-	}
-	@Override
-	public void registerControllers(AnimationData data) {
-		data.addAnimationController(new AnimationController<>(this, "controller", 5, this::predicate));
-	}
-	@Override
-	public AnimationFactory getFactory() {
-		return this.factory;
+	public boolean sleepCondition() {
+		if (!this.level.isDay()) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	protected PathNavigator createNavigation(World pLevel) {
 		FlyingPathNavigator flyingpathnavigator = new FlyingPathNavigator(this, pLevel) {
@@ -162,10 +181,10 @@ public class SweetberryDragonEntity extends AnimalEntity implements IAnimatable,
 		}
 
 		public boolean canUse() {
-			return SweetberryDragonEntity.this.navigation.isDone() && SweetberryDragonEntity.this.random.nextInt(10) == 0;
+			return SweetberryDragonEntity.this.navigation.isDone() && !sleepCondition();
 		}
 		public boolean canContinueToUse() {
-			return SweetberryDragonEntity.this.navigation.isInProgress();
+			return SweetberryDragonEntity.this.navigation.isInProgress() && !sleepCondition();
 		}
 
 		public void start() {

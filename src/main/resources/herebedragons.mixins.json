@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "com.budgiegryphon.herebedragons.mixins",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "herebedragons.refmap.json",
+  "mixins": [
+  ],
+  "client": [
+  ],
+  "minVersion": "0.8"
+}
+

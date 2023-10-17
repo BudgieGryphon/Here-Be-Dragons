@@ -2,16 +2,19 @@ buildscript {
     repositories {
         maven { url = 'https://maven.minecraftforge.net' }
         maven { url = 'https://maven.parchmentmc.org' }
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
         mavenCentral()
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         classpath 'org.parchmentmc:librarian:1.+'
+        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
+apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'maven-publish'
 
 version = '1.0'
@@ -61,7 +64,7 @@ minecraft {
             // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
             property 'forge.logging.console.level', 'debug'
 
-            args '--mod', 'examplemod', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', 'examplemod', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/'), '-Dgeckolib.disable_examples=true'
 
             mods {
                 examplemod {
@@ -87,11 +90,15 @@ repositories {
     }
 dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.2.35'
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
      implementation fg.deobf('curse.maven:geckolib-388172:4182600')
-
 }
 
-// Example for how to get properties into the manifest for reading by the runtime..
+mixin {
+    add sourceSets.main, 'mixins.herebedragons.refmap.json'
+    config 'herebedragons.mixins.json'
+}
+
 jar {
     manifest {
         attributes([
