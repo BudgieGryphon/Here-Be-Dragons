@@ -15,7 +15,6 @@ import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.FlyingMovementController;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.IFlyingAnimal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
@@ -26,14 +25,13 @@ import net.minecraft.pathfinding.FlyingPathNavigator;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -44,14 +42,14 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
 
-public class SweetberryDragonEntity extends AnimalEntity implements IAnimatable, IFlyingAnimal{
+public class SweetberryDragonEntity extends BaseDragonEntity implements IAnimatable, IFlyingAnimal{
 	protected static final AnimationBuilder FLY = new AnimationBuilder().addAnimation("animation.berrydragon.fly", true);
 	protected static final AnimationBuilder SLEEP = new AnimationBuilder().addAnimation("animation.berrydragon.sleep", true);
 	protected static final AnimationBuilder IDLE = new AnimationBuilder().addAnimation("animation.berrydragon.idle", true);
 
 	private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
-	public SweetberryDragonEntity(EntityType<? extends AnimalEntity> type, World worldIn) {
+	public SweetberryDragonEntity(EntityType<? extends BaseDragonEntity> type, World worldIn) {
 		super(type, worldIn);
 		this.moveControl = new FlyingMovementController(this, 10, false);
 		this.setPathfindingMalus(PathNodeType.DANGER_FIRE, -1.0F);
@@ -69,7 +67,7 @@ public class SweetberryDragonEntity extends AnimalEntity implements IAnimatable,
 	}
 
 	protected <E extends SweetberryDragonEntity> PlayState AnimController(final AnimationEvent<E> event) {
-		if (this.isSleeping()) {
+		if (this.getState() == 1 && isOnGround()) {
 			event.getController().setAnimation(SLEEP);
 		}
 		else {
@@ -99,7 +97,7 @@ public class SweetberryDragonEntity extends AnimalEntity implements IAnimatable,
 		super.registerGoals();
 
 		this.goalSelector.addGoal(0, new PanicGoal(this, 1.5D));
-		this.goalSelector.addGoal(1, new DragonSleepGoal(this, sleepCondition()));
+		this.goalSelector.addGoal(1, new DragonSleepGoal(this));
 		this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
 		this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(Items.SWEET_BERRIES), false));
 		this.goalSelector.addGoal(4, new SweetberryDragonEntity.WanderGoal());
@@ -116,6 +114,11 @@ public class SweetberryDragonEntity extends AnimalEntity implements IAnimatable,
 	}
 	protected void checkFallDamage(double pY, boolean pOnGround, BlockState pState, BlockPos pPos) {
 	}
+	public boolean isInvulnerableTo(DamageSource source) {
+		return (this.isInvulnerable() && source != DamageSource.OUT_OF_WORLD && !source.isCreativePlayer()) || source == DamageSource.SWEET_BERRY_BUSH ;
+	}
+	public void makeStuckInBlock(BlockState state, Vector3d speed) {
+		}
 	public boolean isPushable() {
 		return true;
 	}
@@ -133,10 +136,8 @@ public class SweetberryDragonEntity extends AnimalEntity implements IAnimatable,
 		ItemStack itemstack = player.getItemInHand(hand);
 		if (!this.level.isClientSide) {
 			if (itemstack.getItem() == Items.SWEET_BERRIES) {
-				this.setInLove(player);
-				itemstack.shrink(1);
+				return super.mobInteract(player, hand);
 			}
-			else {
 				ItemStack itemstack1 = new ItemStack(FoodInit.sweetberrydrgitem.get());
 				if(hasCustomName()) {
 					itemstack1.setHoverName(getCustomName());
@@ -148,19 +149,15 @@ public class SweetberryDragonEntity extends AnimalEntity implements IAnimatable,
 					player.setItemInHand(hand, itemstack1);
 				}
 				remove();
-			}
 		}
 		return ActionResultType.sidedSuccess(this.level.isClientSide);
 	}
 
-
 	public boolean sleepCondition() {
-		if (!this.level.isDay()) {
-			return true;
-		}
-		else {
-			return false;
-		}
+		return this.level.isNight();
+	}
+	public boolean isFood(ItemStack pStack) {
+		return pStack.getItem() == Items.SWEET_BERRIES;
 	}
 	protected PathNavigator createNavigation(World pLevel) {
 		FlyingPathNavigator flyingpathnavigator = new FlyingPathNavigator(this, pLevel) {
@@ -181,10 +178,10 @@ public class SweetberryDragonEntity extends AnimalEntity implements IAnimatable,
 		}
 
 		public boolean canUse() {
-			return SweetberryDragonEntity.this.navigation.isDone() && !sleepCondition();
+			return SweetberryDragonEntity.this.navigation.isDone();
 		}
 		public boolean canContinueToUse() {
-			return SweetberryDragonEntity.this.navigation.isInProgress() && !sleepCondition();
+			return SweetberryDragonEntity.this.navigation.isInProgress();
 		}
 
 		public void start() {

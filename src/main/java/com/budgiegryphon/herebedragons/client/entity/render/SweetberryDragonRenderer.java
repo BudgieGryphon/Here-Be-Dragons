@@ -26,6 +26,9 @@ public class SweetberryDragonRenderer extends GeoEntityRenderer<SweetberryDragon
     }
     @Override
     public ResourceLocation getTextureLocation(SweetberryDragonEntity entity) {
+        if (entity.isBaby()) {
+            return new ResourceLocation(herebedragons.MOD_ID, "textures/entities/sweetbaby.png");
+        }
         return new ResourceLocation(herebedragons.MOD_ID, "textures/entities/sweetberry.png");
     }
 
