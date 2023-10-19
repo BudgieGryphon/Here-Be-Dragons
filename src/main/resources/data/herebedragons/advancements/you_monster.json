@@ -1,0 +1,23 @@
+{
+  "parent": "herebedragons:here_be_dragons",
+  "display": {
+    "icon": {
+      "item": "herebedragons:babysweetberrydrgitem"
+    },
+    "title": "You Monster",
+    "description": "It was so little!",
+    "frame": "task",
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "item": "herebedragons:babysweetberrydrgitem"
+        }
+      }
+    }
+  }
+}

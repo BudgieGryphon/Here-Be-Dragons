@@ -1,11 +1,11 @@
 {
 	"item.herebedragons.dragonleather": "Dragonleather",
-	
 	"item.herebedragons.dragonleatherscrap": "Dragonleather Scrap",
-	
 	"item.herebedragons.sweetberrydrgitem": "Sweetberry Dragon",
+	"item.herebedragons.babysweetberrydrgitem": "Baby Sweetberry Dragon",
+	"item.herebedragons.roastedsweetberrydrg": "Roasted Sweetberry Dragon",
 
-	"item.herebedragons.cookedsweetberrydrg": "Cooked Sweetberry Dragon",
+	"entity.herebedragons.sweetberry_dragon": "Sweetberry Dragon",
 
-	"itemGroup.HBDGroup": "Here Be Dragons"
+	"itemGroup.herebedragonstab": "Here Be Dragons"
 }

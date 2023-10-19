@@ -1,0 +1,18 @@
+{
+  "display": {
+    "icon": {
+      "item": "herebedragons:sweetberrydrgitem"
+    },
+    "title": "Here Be Dragons",
+    "description": "Ware the skies, and have fun.",
+    "background": "minecraft:textures/block/obsidian.png",
+    "show_toast": false,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}

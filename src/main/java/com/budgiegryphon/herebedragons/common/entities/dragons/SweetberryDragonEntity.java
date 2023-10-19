@@ -138,17 +138,20 @@ public class SweetberryDragonEntity extends BaseDragonEntity implements IAnimata
 			if (itemstack.getItem() == Items.SWEET_BERRIES) {
 				return super.mobInteract(player, hand);
 			}
-				ItemStack itemstack1 = new ItemStack(FoodInit.sweetberrydrgitem.get());
-				if(hasCustomName()) {
-					itemstack1.setHoverName(getCustomName());
-				}
-				if(!itemstack.isEmpty()) {
-					InventoryHelper.dropItemStack(level, getX(), getY(), getZ(), itemstack1);
-				}
-				else {
-					player.setItemInHand(hand, itemstack1);
-				}
-				remove();
+			ItemStack itemstack1 = new ItemStack(FoodInit.sweetberrydrgitem.get());
+			if(isBaby()) {
+				itemstack1 = new ItemStack(FoodInit.babysweetberrydrgitem.get());
+			}
+			if(hasCustomName()) {
+				itemstack1.setHoverName(getCustomName());
+			}
+			if(!itemstack.isEmpty()) {
+				InventoryHelper.dropItemStack(level, getX(), getY(), getZ(), itemstack1);
+			}
+			else {
+				player.setItemInHand(hand, itemstack1);
+			}
+			remove();
 		}
 		return ActionResultType.sidedSuccess(this.level.isClientSide);
 	}

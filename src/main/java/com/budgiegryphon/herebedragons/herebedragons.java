@@ -45,12 +45,12 @@ public class herebedragons
 
     public static class HBDGroup extends ItemGroup {
         public HBDGroup(String label) {
-            super("label");
+            super(label);
         }
 
         @Override
         public ItemStack makeIcon() {
-            return FoodInit.cookedsweetberrydrg.get().getDefaultInstance();
+            return FoodInit.roastedsweetberrydrg.get().getDefaultInstance();
         }
     }
 
