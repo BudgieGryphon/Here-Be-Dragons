@@ -18,7 +18,6 @@ public class DragonSleepGoal extends Goal {
         return !this.entity.isVehicle() && this.entity.sleepCondition();
     }
     public boolean canUse() {
-        //add isOnGround when dragon look control is finished
         return !this.entity.isVehicle() && this.entity.sleepCondition() && !this.entity.isAggressive() && this.entity.getRandom().nextFloat() < 0.8F;
     }
     public void start() {

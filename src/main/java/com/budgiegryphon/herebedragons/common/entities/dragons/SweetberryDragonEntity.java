@@ -8,6 +8,7 @@ import com.budgiegryphon.herebedragons.common.entities.ai.DragonSleepGoal;
 import com.budgiegryphon.herebedragons.core.init.EntityTypeInit;
 import com.budgiegryphon.herebedragons.core.init.FoodInit;
 
+import com.budgiegryphon.herebedragons.core.util.HBDSoundEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.RandomPositionGenerator;
@@ -27,6 +28,7 @@ import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IWorldReader;
@@ -59,24 +61,50 @@ public class SweetberryDragonEntity extends BaseDragonEntity implements IAnimata
 
 	public static AttributeModifierMap.MutableAttribute createAttributes() {
 		return MobEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 5.0D).add(Attributes.FLYING_SPEED, 0.4D).add(Attributes.MOVEMENT_SPEED, 0.3F);
-
 	}
+	public void aiStep() {
+		super.aiStep();
+		Vector3d vector3d = this.getDeltaMovement();
+		if (this.isInWater()) {
+			this.setDeltaMovement(vector3d.multiply(1.0D, 1.6D, 1.0D));
+		}
+		if (!this.onGround && !this.isInWater() && this.getState() != 2) {
+			this.setDeltaMovement(vector3d.multiply(1.0D, 0.6D, 1.0D));
+		}
+	}
+
+	@Override
+	protected SoundEvent getAmbientSound() {
+
+		if (this.getState() != 1) {
+			return HBDSoundEvents.SWEETBERRY_AMBIENT.get();
+		}
+		else return null;
+	}
+	@Override
+	protected SoundEvent getHurtSound(DamageSource source) {
+		return HBDSoundEvents.SWEETBERRY_HURT.get();
+	}
+	protected SoundEvent getDeathSound() {
+		return HBDSoundEvents.SWEETBERRY_DIE.get();
+	}
+
 	@Override
 	public void registerControllers(final AnimationData data) {
 		data.addAnimationController(new AnimationController<>(this, "berrydragon", 5, this::AnimController));
 	}
 
 	protected <E extends SweetberryDragonEntity> PlayState AnimController(final AnimationEvent<E> event) {
-		if (this.getState() == 1 && isOnGround()) {
-			event.getController().setAnimation(SLEEP);
-		}
-		else {
-			if (event.isMoving()) {
-				event.getController().setAnimation(FLY);
+		if (this.isOnGround()) {
+			if(this.getState() == 1) {
+				event.getController().setAnimation(SLEEP);
 			}
 			else {
 				event.getController().setAnimation(IDLE);
 			}
+		}
+		else {
+				event.getController().setAnimation(FLY);
 		}
 		return PlayState.CONTINUE;
 	}
@@ -101,12 +129,13 @@ public class SweetberryDragonEntity extends BaseDragonEntity implements IAnimata
 		this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
 		this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(Items.SWEET_BERRIES), false));
 		this.goalSelector.addGoal(4, new SweetberryDragonEntity.WanderGoal());
-		this.goalSelector.addGoal(5, new FollowMobGoal(this, 1.0D, 3.0F, 7.0F));
+		//reimplement follow when a unique follow goal has been created, current goal doesn't have a stop
+		//this.goalSelector.addGoal(5, new FollowMobGoal(this, 1.0D, 3.0F, 7.0F));
+		this.goalSelector.addGoal(5, new SweetberryDragonEntity.RandomLookGoal());
 
 	}
-	protected int getExperiencePoints(PlayerEntity player)
-	{
-		return 1;
+	protected boolean isMovementNoisy() {
+		return false;
 	}
 
 	public boolean causeFallDamage(float pFallDistance, float pDamageMultiplier) {
@@ -157,7 +186,13 @@ public class SweetberryDragonEntity extends BaseDragonEntity implements IAnimata
 	}
 
 	public boolean sleepCondition() {
-		return this.level.isNight();
+		if (this.level.isNight() && !this.isInWater()) {
+			if (!this.isOnGround()) {
+				return this.isOverSolidObject();
+			}
+			return true;
+		}
+		return false;
 	}
 	public boolean isFood(ItemStack pStack) {
 		return pStack.getItem() == Items.SWEET_BERRIES;
@@ -181,7 +216,7 @@ public class SweetberryDragonEntity extends BaseDragonEntity implements IAnimata
 		}
 
 		public boolean canUse() {
-			return SweetberryDragonEntity.this.navigation.isDone();
+			return SweetberryDragonEntity.this.navigation.isDone() && SweetberryDragonEntity.this.random.nextInt(10) > 2 && SweetberryDragonEntity.this.getState() == 2;
 		}
 		public boolean canContinueToUse() {
 			return SweetberryDragonEntity.this.navigation.isInProgress();
@@ -189,6 +224,7 @@ public class SweetberryDragonEntity extends BaseDragonEntity implements IAnimata
 
 		public void start() {
 			Vector3d vector3d = this.findPos();
+			SweetberryDragonEntity.this.setState((byte) 2);
 			if (vector3d != null) {
 				SweetberryDragonEntity.this.navigation.moveTo(SweetberryDragonEntity.this.navigation.createPath(new BlockPos(vector3d), 1), 1.0D);
 			}
@@ -201,6 +237,37 @@ public class SweetberryDragonEntity extends BaseDragonEntity implements IAnimata
 
 			Vector3d vector3d2 = RandomPositionGenerator.getAboveLandPos(SweetberryDragonEntity.this, 8, 7, vector3d, ((float)Math.PI / 2F), 2, 1);
 			return vector3d2 != null ? vector3d2 : RandomPositionGenerator.getAirPos(SweetberryDragonEntity.this, 8, 4, -2, vector3d, ((float)Math.PI / 2F));
+		}
+	}
+	class RandomLookGoal extends Goal{
+		private double relX;
+		private double relZ;
+		private int time;
+		RandomLookGoal() {
+			this.setFlags(EnumSet.of(Goal.Flag.LOOK));
+		}
+		public boolean canUse() {
+			if (SweetberryDragonEntity.this.getState() != 1 && SweetberryDragonEntity.this.getNavigation().isDone()) {
+				return SweetberryDragonEntity.this.isOverSolidObject();
+			}
+			return false;
+		}
+		public boolean canContinueToUse() {
+			return this.time > 0 && SweetberryDragonEntity.this.isInWater();
+		}
+		public void start() {
+		SweetberryDragonEntity.this.setState((byte) 0);
+			double d0 = (Math.PI * 2D) * SweetberryDragonEntity.this.getRandom().nextDouble();
+			this.relX = Math.cos(d0);
+			this.relZ = Math.sin(d0);
+			this.time = 20 + SweetberryDragonEntity.this.getRandom().nextInt(60);
+		}
+		public void stop() {
+			SweetberryDragonEntity.this.setState((byte) 2);
+		}
+		public void tick() {
+			SweetberryDragonEntity.this.getLookControl().setLookAt(SweetberryDragonEntity.this.getX() + this.relX, SweetberryDragonEntity.this.getEyeY(), SweetberryDragonEntity.this.getZ() + this.relZ);
+			--this.time;
 		}
 	}
 }

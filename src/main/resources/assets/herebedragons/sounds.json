@@ -1,0 +1,18 @@
+{
+  "sweetberry_ambient": {
+    "sounds": [
+      "herebedragons:dragons/sweetberry1",
+      "herebedragons:dragons/sweetberry2"
+    ]
+  },
+  "sweetberry_hurt": {
+    "sounds": [
+      "herebedragons:dragons/sweetberryhurt"
+    ]
+  },
+  "sweetberry_die": {
+    "sounds": [
+      "herebedragons:dragons/sweetberrydie"
+    ]
+  }
+}

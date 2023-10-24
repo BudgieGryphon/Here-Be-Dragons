@@ -1,6 +1,7 @@
 package com.budgiegryphon.herebedragons;
 
 
+import com.budgiegryphon.herebedragons.core.util.HBDSoundEvents;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
@@ -37,7 +38,7 @@ public class herebedragons
         ItemInit.ITEMS.register(modEventBus);
         FoodInit.ITEMS.register(modEventBus);
         EntityTypeInit.ENTITY_TYPES.register(modEventBus);
-        GeckoLibMod.DISABLE_IN_DEV = true;
+        HBDSoundEvents.SOUND_EVENTS.register(modEventBus);
         GeckoLib.initialize();
         MinecraftForge.EVENT_BUS.register(this);
 
