@@ -1,20 +1,17 @@
 package com.budgiegryphon.herebedragons.common.entities.dragons;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.fluids.IFluidBlock;
 
 import javax.annotation.Nullable;
 
@@ -37,17 +34,16 @@ public class BaseDragonEntity extends TameableEntity {
             return true;
         }
         double i = this.getY();
+        if (i < 0) {
+            return false;
+        }
 
         while (i >= 0) {
             BlockPos posChecked = new BlockPos(this.getX(), i, this.getZ());
-            Block blockChecked = this.level.getBlockState(posChecked).getBlock();
+            BlockState checkedState = this.level.getBlockState(posChecked);
+            Block blockChecked = checkedState.getBlock();
             if (blockChecked != Blocks.AIR) {
-                if (this.level.getBlockState(posChecked).entityCanStandOn(this.level, posChecked, this)) {
-                    return true;
-                }
-                else {
-                    return false;
-                }
+                return checkedState.entityCanStandOn(this.level, posChecked, this);
             }
             i--;
         }

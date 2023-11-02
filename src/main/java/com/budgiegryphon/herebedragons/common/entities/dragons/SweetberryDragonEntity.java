@@ -76,10 +76,10 @@ public class SweetberryDragonEntity extends BaseDragonEntity implements IAnimata
 	@Override
 	protected SoundEvent getAmbientSound() {
 
-		if (this.getState() != 1) {
-			return HBDSoundEvents.SWEETBERRY_AMBIENT.get();
+		if (this.getState() == 1 && this.isOnGround()) {
+			return null;
 		}
-		else return null;
+		else return HBDSoundEvents.SWEETBERRY_AMBIENT.get();
 	}
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
@@ -95,7 +95,7 @@ public class SweetberryDragonEntity extends BaseDragonEntity implements IAnimata
 	}
 
 	protected <E extends SweetberryDragonEntity> PlayState AnimController(final AnimationEvent<E> event) {
-		if (this.isOnGround()) {
+		if (!event.isMoving() && this.isOnGround()) {
 			if(this.getState() == 1) {
 				event.getController().setAnimation(SLEEP);
 			}
@@ -129,8 +129,6 @@ public class SweetberryDragonEntity extends BaseDragonEntity implements IAnimata
 		this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
 		this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(Items.SWEET_BERRIES), false));
 		this.goalSelector.addGoal(4, new SweetberryDragonEntity.WanderGoal());
-		//reimplement follow when a unique follow goal has been created, current goal doesn't have a stop
-		//this.goalSelector.addGoal(5, new FollowMobGoal(this, 1.0D, 3.0F, 7.0F));
 		this.goalSelector.addGoal(5, new SweetberryDragonEntity.RandomLookGoal());
 
 	}
@@ -216,7 +214,7 @@ public class SweetberryDragonEntity extends BaseDragonEntity implements IAnimata
 		}
 
 		public boolean canUse() {
-			return SweetberryDragonEntity.this.navigation.isDone() && SweetberryDragonEntity.this.random.nextInt(10) > 2 && SweetberryDragonEntity.this.getState() == 2;
+			return SweetberryDragonEntity.this.navigation.isDone() && SweetberryDragonEntity.this.random.nextInt(20) > 1 && SweetberryDragonEntity.this.getState() == 2;
 		}
 		public boolean canContinueToUse() {
 			return SweetberryDragonEntity.this.navigation.isInProgress();
@@ -247,16 +245,18 @@ public class SweetberryDragonEntity extends BaseDragonEntity implements IAnimata
 			this.setFlags(EnumSet.of(Goal.Flag.LOOK));
 		}
 		public boolean canUse() {
-			if (SweetberryDragonEntity.this.getState() != 1 && SweetberryDragonEntity.this.getNavigation().isDone()) {
+			if (SweetberryDragonEntity.this.getState() != 1 && SweetberryDragonEntity.this.navigation.isDone()) {
 				return SweetberryDragonEntity.this.isOverSolidObject();
 			}
-			return false;
+			else {
+				return false;
+			}
 		}
 		public boolean canContinueToUse() {
-			return this.time > 0 && SweetberryDragonEntity.this.isInWater();
+			return this.time > 0 && !SweetberryDragonEntity.this.isInWater();
 		}
 		public void start() {
-		SweetberryDragonEntity.this.setState((byte) 0);
+			SweetberryDragonEntity.this.setState((byte) 0);
 			double d0 = (Math.PI * 2D) * SweetberryDragonEntity.this.getRandom().nextDouble();
 			this.relX = Math.cos(d0);
 			this.relZ = Math.sin(d0);

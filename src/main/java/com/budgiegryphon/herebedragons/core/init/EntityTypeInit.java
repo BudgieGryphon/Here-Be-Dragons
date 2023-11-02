@@ -4,6 +4,7 @@ import com.budgiegryphon.herebedragons.herebedragons;
 import com.budgiegryphon.herebedragons.common.entities.dragons.SweetberryDragonEntity;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -21,5 +22,8 @@ public class EntityTypeInit {
 
 	public static void register(IEventBus eventBus) {
 		ENTITY_TYPES.register(eventBus);
+	}
+	public static void setAttributes(EntityAttributeCreationEvent event) {
+		event.put(EntityTypeInit.SWEETBERRYDRAGON_ENTITY.get(), SweetberryDragonEntity.createAttributes().build());
 	}
 }
