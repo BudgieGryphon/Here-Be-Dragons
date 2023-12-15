@@ -68,6 +68,7 @@ public class SweetberryDragonEntity extends BaseDragonEntity implements IAnimata
 		if (this.isInWater()) {
 			this.setDeltaMovement(vector3d.multiply(1.0D, 1.6D, 1.0D));
 		}
+		//slow down falling when not flying
 		if (!this.onGround && !this.isInWater() && this.getState() != 2) {
 			this.setDeltaMovement(vector3d.multiply(1.0D, 0.6D, 1.0D));
 		}
