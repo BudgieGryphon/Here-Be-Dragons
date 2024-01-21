@@ -6,30 +6,30 @@ import com.budgiegryphon.herebedragons.common.entities.dragons.SweetberryDragonE
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
-import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
+import mod.azure.azurelib.cache.object.BakedGeoModel;
+import mod.azure.azurelib.renderer.GeoEntityRenderer;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
 
-public class SweetberryDragonRenderer extends GeoEntityRenderer<SweetberryDragonEntity>{
+public class SweetberryDragonRenderer extends GeoEntityRenderer<SweetberryDragonEntity> {
     public SweetberryDragonRenderer(EntityRendererManager renderManager) {
         super(renderManager, new SweetberryDragonModel());
         this.shadowRadius = 0.1f;
     }
     @Override
-    public RenderType getRenderType(SweetberryDragonEntity animatable, float partialTicks, MatrixStack stack, IRenderTypeBuffer renderTypeBuffer, IVertexBuilder vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
-        if (animatable.isBaby()) {
-            stack.scale(0.5F, 0.5F, 0.5F);
+    public void preRender(MatrixStack poseStack, SweetberryDragonEntity entity, BakedGeoModel model, IRenderTypeBuffer bufferSource, IVertexBuilder buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        if (entity.isBaby()) {
+            poseStack.scale(0.5f, 0.5f, 0.5f);
         }
-        return RenderType.entityTranslucent(this.getTextureLocation(animatable));
+        super.preRender(poseStack, entity, model, bufferSource, buffer, isReRender,partialTick, packedLight, packedOverlay, red, green, blue, alpha);
     }
     @Override
     public ResourceLocation getTextureLocation(SweetberryDragonEntity entity) {
         if (entity.isBaby()) {
-            return new ResourceLocation(herebedragons.MOD_ID, "textures/entities/sweetbaby.png");
+            return new ResourceLocation("herebedragons", "textures/entities/sweetbaby.png");
         }
-        return new ResourceLocation(herebedragons.MOD_ID, "textures/entities/sweetberry.png");
+        return new ResourceLocation("herebedragons", "textures/entities/sweetberry.png");
     }
-
 }

@@ -64,7 +64,7 @@ minecraft {
             // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
             property 'forge.logging.console.level', 'debug'
 
-            args '--mod', 'examplemod', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/'), '-Dgeckolib.disable_examples=true'
+            args '--mod', 'examplemod', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
                 examplemod {
@@ -77,10 +77,7 @@ minecraft {
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
-repositories {   
-    maven {
-        url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
-    }
+repositories {
     maven {
         url "https://cursemaven.com"
         content {
@@ -89,9 +86,9 @@ repositories {
     }
     }
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.5-36.2.35'
+    minecraft 'net.minecraftforge:forge:1.16.5-36.2.41'
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-     implementation fg.deobf('curse.maven:geckolib-388172:4182600')
+    implementation fg.deobf("curse.maven:azurelib-817423:5042503")
 }
 
 mixin {

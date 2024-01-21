@@ -9,7 +9,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import software.bernie.geckolib3.GeckoLib;
+
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,7 +33,6 @@ public class herebedragons
         FoodInit.ITEMS.register(modEventBus);
         EntityTypeInit.ENTITY_TYPES.register(modEventBus);
         HBDSoundEvents.SOUND_EVENTS.register(modEventBus);
-        GeckoLib.initialize();
         MinecraftForge.EVENT_BUS.register(this);
 
     }

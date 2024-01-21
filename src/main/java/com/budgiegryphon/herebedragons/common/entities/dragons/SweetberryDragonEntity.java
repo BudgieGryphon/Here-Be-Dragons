@@ -2,13 +2,20 @@ package com.budgiegryphon.herebedragons.common.entities.dragons;
 
 import java.util.EnumSet;
 
-import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.budgiegryphon.herebedragons.common.entities.ai.DragonSleepGoal;
 import com.budgiegryphon.herebedragons.core.init.EntityTypeInit;
 import com.budgiegryphon.herebedragons.core.init.FoodInit;
 
 import com.budgiegryphon.herebedragons.core.util.HBDSoundEvents;
+import mcp.MethodsReturnNonnullByDefault;
+import mod.azure.azurelib.animatable.GeoEntity;
+import mod.azure.azurelib.core.animatable.instance.AnimatableInstanceCache;
+import mod.azure.azurelib.core.animation.AnimatableManager;
+import mod.azure.azurelib.core.animation.AnimationController;
+import mod.azure.azurelib.core.animation.RawAnimation;
+import mod.azure.azurelib.util.AzureLibUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.RandomPositionGenerator;
@@ -34,22 +41,14 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
 
-
-public class SweetberryDragonEntity extends BaseDragonEntity implements IAnimatable, IFlyingAnimal{
-	protected static final AnimationBuilder FLY = new AnimationBuilder().addAnimation("animation.berrydragon.fly", true);
-	protected static final AnimationBuilder SLEEP = new AnimationBuilder().addAnimation("animation.berrydragon.sleep", true);
-	protected static final AnimationBuilder IDLE = new AnimationBuilder().addAnimation("animation.berrydragon.idle", true);
-
-	private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+@ParametersAreNonnullByDefault
+public class SweetberryDragonEntity extends BaseDragonEntity implements GeoEntity, IFlyingAnimal{
+	private final AnimatableInstanceCache cache = AzureLibUtil.createInstanceCache(this);
+	@Override
+	public AnimatableInstanceCache getAnimatableInstanceCache() {
+		return cache;
+	}
 
 	public SweetberryDragonEntity(EntityType<? extends BaseDragonEntity> type, World worldIn) {
 		super(type, worldIn);
@@ -74,7 +73,6 @@ public class SweetberryDragonEntity extends BaseDragonEntity implements IAnimata
 		}
 	}
 
-	@Override
 	protected SoundEvent getAmbientSound() {
 
 		if (this.getState() == 1 && this.isOnGround()) {
@@ -82,7 +80,6 @@ public class SweetberryDragonEntity extends BaseDragonEntity implements IAnimata
 		}
 		else return HBDSoundEvents.SWEETBERRY_AMBIENT.get();
 	}
-	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
 		return HBDSoundEvents.SWEETBERRY_HURT.get();
 	}
@@ -91,28 +88,22 @@ public class SweetberryDragonEntity extends BaseDragonEntity implements IAnimata
 	}
 
 	@Override
-	public void registerControllers(final AnimationData data) {
-		data.addAnimationController(new AnimationController<>(this, "berrydragon", 5, this::AnimController));
-	}
-
-	protected <E extends SweetberryDragonEntity> PlayState AnimController(final AnimationEvent<E> event) {
-		if (!event.isMoving() && this.isOnGround()) {
-			if(this.getState() == 1) {
-				event.getController().setAnimation(SLEEP);
+	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+		controllers.add(new AnimationController<>(this, "sweetberry", 5, event -> {
+			if (!event.isMoving() && this.isOnGround()) {
+				if(this.getState() == 1) {
+					return event.setAndContinue(RawAnimation.begin().thenLoop("SLEEP"));
+				}
+				else {
+					return event.setAndContinue(RawAnimation.begin().thenLoop("IDLE"));
+				}
 			}
 			else {
-				event.getController().setAnimation(IDLE);
+				return event.setAndContinue(RawAnimation.begin().thenLoop("FLY"));
 			}
-		}
-		else {
-				event.getController().setAnimation(FLY);
-		}
-		return PlayState.CONTINUE;
+		}));
 	}
-	@Override
-	public AnimationFactory getFactory() {
-		return this.factory;
-	}
+
 	public AgeableEntity getBreedOffspring(ServerWorld world, AgeableEntity entity) {
 		return EntityTypeInit.SWEETBERRYDRAGON_ENTITY.get().create(world);
 	}
@@ -160,6 +151,7 @@ public class SweetberryDragonEntity extends BaseDragonEntity implements IAnimata
 	}
 
 	//yoink.
+	@MethodsReturnNonnullByDefault
 	public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
 		ItemStack itemstack = player.getItemInHand(hand);
 		if (!this.level.isClientSide) {
@@ -196,6 +188,7 @@ public class SweetberryDragonEntity extends BaseDragonEntity implements IAnimata
 	public boolean isFood(ItemStack pStack) {
 		return pStack.getItem() == Items.SWEET_BERRIES;
 	}
+
 	protected PathNavigator createNavigation(World pLevel) {
 		FlyingPathNavigator flyingpathnavigator = new FlyingPathNavigator(this, pLevel) {
 			@SuppressWarnings("deprecation")
@@ -228,8 +221,6 @@ public class SweetberryDragonEntity extends BaseDragonEntity implements IAnimata
 				SweetberryDragonEntity.this.navigation.moveTo(SweetberryDragonEntity.this.navigation.createPath(new BlockPos(vector3d), 1), 1.0D);
 			}
 		}
-
-		@Nullable
 		private Vector3d findPos() {
 			Vector3d vector3d;
 			vector3d = SweetberryDragonEntity.this.getViewVector(0.0F);

@@ -3,24 +3,25 @@ package com.budgiegryphon.herebedragons.client.entity.model;
 import com.budgiegryphon.herebedragons.herebedragons;
 import com.budgiegryphon.herebedragons.common.entities.dragons.SweetberryDragonEntity;
 
+import mod.azure.azurelib.model.GeoModel;
 import net.minecraft.util.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
 
-public class SweetberryDragonModel extends AnimatedGeoModel<SweetberryDragonEntity>{
 
-    @Override
-    public ResourceLocation getAnimationFileLocation(SweetberryDragonEntity animatable) {
-        return new ResourceLocation(herebedragons.MOD_ID, "animations/berrydragon.animation.json");
-    }
+public class SweetberryDragonModel extends GeoModel<SweetberryDragonEntity> {
+    private static final ResourceLocation model = new ResourceLocation("herebedragons","geo/berrydragon.geo.json");
+    private static final ResourceLocation texture = new ResourceLocation("herebedragons","textures/entities/sweetberry.png");
+    private static final ResourceLocation animation = new ResourceLocation("herebedragons","animations/berrydragon.animation.json");
 
     @Override
-    public ResourceLocation getModelLocation(SweetberryDragonEntity object) {
-        return new ResourceLocation(herebedragons.MOD_ID, "geo/berrydragon.geo.json");
+    public ResourceLocation getModelResource(SweetberryDragonEntity object) {
+        return this.model;
     }
-
     @Override
-    public ResourceLocation getTextureLocation(SweetberryDragonEntity object) {
-        return new ResourceLocation(herebedragons.MOD_ID, "textures/entities/sweetberry.png");
+    public ResourceLocation getTextureResource(SweetberryDragonEntity object) {
+        return this.texture;
     }
-
+    @Override
+    public ResourceLocation getAnimationResource(SweetberryDragonEntity object) {
+        return this.animation;
+    }
 }
