@@ -25,11 +25,4 @@ public class SweetberryDragonRenderer extends GeoEntityRenderer<SweetberryDragon
         }
         super.preRender(poseStack, entity, model, bufferSource, buffer, isReRender,partialTick, packedLight, packedOverlay, red, green, blue, alpha);
     }
-    @Override
-    public ResourceLocation getTextureLocation(SweetberryDragonEntity entity) {
-        if (entity.isBaby()) {
-            return new ResourceLocation("herebedragons", "textures/entities/sweetbaby.png");
-        }
-        return new ResourceLocation("herebedragons", "textures/entities/sweetberry.png");
-    }
 }

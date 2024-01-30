@@ -92,14 +92,14 @@ public class SweetberryDragonEntity extends BaseDragonEntity implements GeoEntit
 		controllers.add(new AnimationController<>(this, "sweetberry", 5, event -> {
 			if (!event.isMoving() && this.isOnGround()) {
 				if(this.getState() == 1) {
-					return event.setAndContinue(RawAnimation.begin().thenLoop("SLEEP"));
+					return event.setAndContinue(RawAnimation.begin().thenLoop("animation.berrydragon.sleep"));
 				}
 				else {
-					return event.setAndContinue(RawAnimation.begin().thenLoop("IDLE"));
+					return event.setAndContinue(RawAnimation.begin().thenLoop("animation.berrydragon.idle"));
 				}
 			}
 			else {
-				return event.setAndContinue(RawAnimation.begin().thenLoop("FLY"));
+				return event.setAndContinue(RawAnimation.begin().thenLoop("animation.berrydragon.fly"));
 			}
 		}));
 	}

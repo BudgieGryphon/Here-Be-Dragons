@@ -78,17 +78,12 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
-    maven {
-        url "https://cursemaven.com"
-        content {
-            includeGroup "curse.maven"
-        }
-    }
+    maven { url 'https://libs.azuredoom.com:4443/mods'}
     }
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.5-36.2.41'
+    minecraft 'net.minecraftforge:forge:1.16.5-36.2.39'
+    implementation fg.deobf("mod.azure.azurelib:azurelib-forge-1.16.5:1.0.32")
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-    implementation fg.deobf("curse.maven:azurelib-817423:5042503")
 }
 
 mixin {
