@@ -9,8 +9,8 @@ import net.minecraft.util.ResourceLocation;
 
 public class SweetberryDragonModel extends GeoModel<SweetberryDragonEntity> {
     private static final ResourceLocation model = new ResourceLocation("herebedragons","geo/berrydragon.geo.json");
-    private static final ResourceLocation texture = new ResourceLocation("herebedragons","textures/entities/sweetberry.png");
-    private static final ResourceLocation babytexture = new ResourceLocation("herebedragons","textures/entities/sweetbaby.png");
+    private static final ResourceLocation texture = new ResourceLocation("herebedragons","textures/entities/sweetberrydragon/sweetberry.png");
+    private static final ResourceLocation babytexture = new ResourceLocation("herebedragons","textures/entities/sweetberrydragon/sweetbaby.png");
     private static final ResourceLocation animation = new ResourceLocation("herebedragons","animations/berrydragon.animation.json");
 
     @Override
