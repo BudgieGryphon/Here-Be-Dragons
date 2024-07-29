@@ -1,6 +1,7 @@
-/*package com.budgiegryphon.herebedragons.client.entity.render;
+package com.budgiegryphon.herebedragons.client.entity.render;
 
 import com.mojang.blaze3d.systems.IRenderCall;
+import mod.azure.azurelib.AzureLib;
 import mod.azure.azurelib.cache.texture.GeoAbstractTexture;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
@@ -13,6 +14,7 @@ import net.minecraft.client.resources.data.TextureMetadataSection;
 import net.minecraft.resources.IResource;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nullable;
@@ -20,6 +22,7 @@ import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 public class CustomLayerTexture extends GeoAbstractTexture {
+    private static final String TESTAPPEND = "custom";
     protected final ResourceLocation textureBase;
     protected final ResourceLocation newLayer;
     public CustomLayerTexture(ResourceLocation originalLocation, ResourceLocation location) {
@@ -27,18 +30,17 @@ public class CustomLayerTexture extends GeoAbstractTexture {
         this.newLayer = location;
     }
 
-    //geckolib and azurelib have an odd lack of a generic layer format
     static class CustomLayerRenderType extends RenderType {
         public CustomLayerRenderType(String p_i225992_1_, VertexFormat p_i225992_2_, int p_i225992_3_, int p_i225992_4_, boolean p_i225992_5_, boolean p_i225992_6_, Runnable p_i225992_7_, Runnable p_i225992_8_) {
             super(p_i225992_1_, p_i225992_2_, p_i225992_3_, p_i225992_4_, p_i225992_5_, p_i225992_6_, p_i225992_7_, p_i225992_8_);
         }
         public static RenderType customlayer(ResourceLocation texture) {
-            return RenderType.create("custom_layer", DefaultVertexFormats.NEW_ENTITY, GL11.GL_QUADS, 256, State.builder().setAlphaState(RenderType.DEFAULT_ALPHA).setCullState(RenderType.NO_CULL).setTextureState(new TextureState(texture, false, false)).setTransparencyState(RenderType.TRANSLUCENT_TRANSPARENCY).setOverlayState(RenderType.OVERLAY).createCompositeState(true));
+            return RenderType.create("custom_layer", DefaultVertexFormats.NEW_ENTITY, 7, 256, State.builder().setAlphaState(RenderType.DEFAULT_ALPHA).setCullState(RenderType.NO_CULL).setTextureState(new TextureState(texture, false, false)).setTransparencyState(RenderType.TRANSLUCENT_TRANSPARENCY).setOverlayState(RenderType.OVERLAY).createCompositeState(true));
         }
     }
-    protected static ResourceLocation getCustomLayerTexture(ResourceLocation resource, String layerid) {
-        ResourceLocation path = appendToPath(resource, layerid);
-        generateTexture(path, textureManager -> textureManager.register(path, new CustomLayerTexture(resource)));
+    protected static ResourceLocation getCustomLayerTexture(ResourceLocation resource) {
+        ResourceLocation path = appendToPath(resource, TESTAPPEND);
+        generateTexture(path, textureManager -> textureManager.register(path, new CustomLayerTexture(resource, path)));
         return path;
     }
     @Nullable
@@ -60,34 +62,34 @@ public class CustomLayerTexture extends GeoAbstractTexture {
         boolean clamp = textureBaseMeta != null && textureBaseMeta.isClamp();
 
         try {
-            IResource glowLayerResource = resourceManager.getResource(this.glowLayer);
-            GeoGlowingTextureMeta glowLayerMeta = null
+            IResource newLayerResource = resourceManager.getResource(this.newLayer);
+            CustomLayerMeta newLayerMeta = null;
 
-            if (glowLayerResource != null) {
-                glowImage = NativeImage.read(glowLayerResource.getInputStream());
-                glowLayerMeta = GeoGlowingTextureMeta.fromExistingImage(glowImage);
+            if (newLayerResource != null) {
+                newImage = NativeImage.read(newLayerResource.getInputStream());
+                newLayerMeta = CustomLayerMeta.fromExistingImage(newImage);
             } else {
-                GeoGlowingTextureMeta meta = textureBaseResource.getMetadata(GeoGlowingTextureMeta.DESERIALIZER);
+                CustomLayerMeta meta = textureBaseResource.getMetadata(CustomLayerMeta.DESERIALIZER);
 
                 if (meta != null) {
-                    glowLayerMeta = meta;
-                    glowImage = new NativeImage(baseImage.getWidth(), baseImage.getHeight(), true);
+                    newLayerMeta = meta;
+                    newImage = new NativeImage(baseImage.getWidth(), baseImage.getHeight(), true);
                 }
             }
 
-            if (glowLayerMeta != null) {
-                glowLayerMeta.createImageMask(baseImage, glowImage);
+            if (newLayerMeta != null) {
+                newLayerMeta.createImageMask(baseImage, newImage);
 
                 if (!FMLEnvironment.production) {
                     printDebugImageToDisk(this.textureBase, baseImage);
-                    printDebugImageToDisk(this.glowLayer, glowImage);
+                    printDebugImageToDisk(this.newLayer, newImage);
                 }
             }
         } catch (IOException e) {
-            AzureLib.LOGGER.warn("Resource failed to open for glowlayer meta: {}", this.glowLayer, e);
+            AzureLib.LOGGER.warn("Resource failed to open for customlayer meta: {}", this.newLayer, e);
         }
 
-        NativeImage mask = glowImage;
+        NativeImage mask = newImage;
 
         if (mask == null)
             return null;
@@ -102,5 +104,8 @@ public class CustomLayerTexture extends GeoAbstractTexture {
             }
         };
     }
+    public static RenderType getRenderType(ResourceLocation texture) {
+        return CustomLayerRenderType.customlayer(getCustomLayerTexture(texture));
+    }
+    
 }
-*/

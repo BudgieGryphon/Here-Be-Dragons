@@ -12,6 +12,7 @@ public class GallimimeRenderer extends GeoEntityRenderer<GallimimeEntity> {
     public GallimimeRenderer(EntityRendererManager renderManager) {
         super(renderManager, new GallimimeModel());
         addRenderLayer(new AutoGlowingGeoLayer<>(this));
+        addRenderLayer(new CustomLayer<>(this));
         this.shadowRadius = 0.1f;
     }
 }
