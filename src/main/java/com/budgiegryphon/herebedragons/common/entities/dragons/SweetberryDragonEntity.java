@@ -64,8 +64,9 @@ public class SweetberryDragonEntity extends BaseDragonEntity implements GeoEntit
 	public void aiStep() {
 		super.aiStep();
 		Vector3d vector3d = this.getDeltaMovement();
+		//get out of water
 		if (this.isInWater()) {
-			this.setDeltaMovement(vector3d.multiply(1.0D, 1.6D, 1.0D));
+			this.setDeltaMovement(vector3d.multiply(1.0D, 1.5D, 1.0D));
 		}
 		//slow down falling when not flying
 		if (!this.onGround && !this.isInWater() && this.getState() != 2) {

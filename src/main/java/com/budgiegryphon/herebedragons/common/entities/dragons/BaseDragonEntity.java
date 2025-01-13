@@ -17,6 +17,7 @@ import javax.annotation.Nullable;
 
 public class BaseDragonEntity extends TameableEntity {
     protected static final DataParameter<Byte> STATE = EntityDataManager.defineId(BaseDragonEntity.class, DataSerializers.BYTE);
+    protected static final DataParameter<Integer> TIMER = EntityDataManager.defineId(BaseDragonEntity.class, DataSerializers.INT);
     protected BaseDragonEntity(EntityType<? extends BaseDragonEntity> type, World worldIn) {
         super (type, worldIn);
     }
@@ -24,8 +25,12 @@ public class BaseDragonEntity extends TameableEntity {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(STATE, (byte)0);
+        this.entityData.define(TIMER, 0);
     }
     public boolean sleepCondition() {
+        return false;
+    }
+    public boolean usesTimer() {
         return false;
     }
     //I'm not sure if this is a potential lag causer but just in case try not to run it too often
@@ -61,7 +66,30 @@ public class BaseDragonEntity extends TameableEntity {
     1 = Sleep
     2 = Flight
      */
+    public void setTimer(int timer) {this.entityData.set(TIMER, timer);}
+    public int getTimer() {
+        return this.entityData.get(TIMER);
+    }
+    /*
+    timer is used for anything done individually at random such as idle animations, also increments with some randomness
+    */
 
+    public void aiStep(){
+        super.aiStep();
+        if (this.usesTimer()) {
+            int t = this.getTimer();
+            if (t >= 1000 || t < 0) {
+                this.setTimer(0);
+            }
+            else {
+                t++;
+                if (this.getRandom().nextInt(10) >= 9) {
+                    t++;
+                }
+                this.setTimer(t);
+            }
+        }
+    }
 
     @Nullable
     @Override

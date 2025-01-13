@@ -35,7 +35,7 @@ public class CustomLayerTexture extends GeoAbstractTexture {
             super(p_i225992_1_, p_i225992_2_, p_i225992_3_, p_i225992_4_, p_i225992_5_, p_i225992_6_, p_i225992_7_, p_i225992_8_);
         }
         public static RenderType customlayer(ResourceLocation texture) {
-            return RenderType.create("custom_layer", DefaultVertexFormats.NEW_ENTITY, 7, 256, State.builder().setAlphaState(RenderType.DEFAULT_ALPHA).setCullState(RenderType.NO_CULL).setTextureState(new TextureState(texture, false, false)).setTransparencyState(RenderType.TRANSLUCENT_TRANSPARENCY).setOverlayState(RenderType.OVERLAY).createCompositeState(true));
+            return RenderType.entityCutout(texture);
         }
     }
     protected static ResourceLocation getCustomLayerTexture(ResourceLocation resource) {

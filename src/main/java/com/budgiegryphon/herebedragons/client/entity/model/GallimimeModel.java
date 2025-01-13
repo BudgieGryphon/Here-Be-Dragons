@@ -8,6 +8,7 @@ public class GallimimeModel extends GeoModel<GallimimeEntity> {
     private static final ResourceLocation model = new ResourceLocation("herebedragons","geo/gallimime.geo.json");
     private static final ResourceLocation texture = new ResourceLocation("herebedragons","textures/entities/gallimime/gallimimewyvern.png");
     private static final ResourceLocation animation = new ResourceLocation("herebedragons","animations/gallimime.animation.json");
+    private static final ResourceLocation backmark = new ResourceLocation("herebedragons","textures/entities/gallimime/gallimuts/backmarkmut.png");
 
     @Override
     public ResourceLocation getModelResource(GallimimeEntity gallimimeEntity) {

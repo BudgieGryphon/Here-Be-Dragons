@@ -22,7 +22,7 @@ public class LandOnHeadGoal extends Goal {
     }
 
     public boolean canUse() {
-        if (this.entity.getRandom().nextFloat() <= 0.02F && this.entity.getState() != 1 && this.entity.getNavigation().isDone()) {
+        if (this.entity.getRandom().nextFloat() <= 0.1F && this.entity.getState() != 1 && this.entity.getNavigation().isDone()) {
             this.player = this.entity.level.getNearestPlayer(this.entity.getX(), this.entity.getEyeY(), this.entity.getZ(), detectDistance, true);
             return this.player != null && this.entity.canSee(player) && !this.player.isVehicle();
         }
