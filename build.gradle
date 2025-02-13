@@ -29,6 +29,8 @@ minecraft {
 
     runs {
         client {
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             workingDirectory project.file('run')
 
             property 'forge.logging.markers', 'REGISTRIES'
@@ -78,13 +80,15 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
-    maven {url 'https://libs.azuredoom.com:4443/mods'}
-    maven {url "https://cursemaven.com"}
+    maven {
+        name = "AzureDoom Mods"
+        url = "https://maven.azuredoom.com/mods"
     }
+
+}
 dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.2.39'
-    implementation fg.deobf("curse.maven:azurelib-817423:5472250")
-    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    implementation fg.deobf("mod.azure.azurelib:azurelib-forge-1.16.5:1.0.52")
 }
 
 mixin {
