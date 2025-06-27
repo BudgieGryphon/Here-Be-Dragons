@@ -489,6 +489,22 @@
 						"2.0": {
 							"vector": [15, 17.5, -17.5],
 							"easing": "easeInOutSine"
+						},
+						"3.0": {
+							"vector": [17.5, 17.5, -17.5],
+							"easing": "easeInSine"
+						},
+						"4.0": {
+							"vector": [15, 17.5, -17.5],
+							"easing": "easeInOutSine"
+						},
+						"5.0": {
+							"vector": [17.5, 17.5, -17.5],
+							"easing": "easeInSine"
+						},
+						"6.0": {
+							"vector": [15, 17.5, -17.5],
+							"easing": "easeInOutSine"
 						}
 					}
 				},
@@ -517,6 +533,22 @@
 							"easing": "easeInSine"
 						},
 						"2.0": {
+							"vector": [58.37, -34.66, 5.22],
+							"easing": "easeOutSine"
+						},
+						"3.0": {
+							"vector": [58.41625, -32.16098, 5.13602],
+							"easing": "easeInSine"
+						},
+						"4.0": {
+							"vector": [58.37, -34.66, 5.22],
+							"easing": "easeOutSine"
+						},
+						"5.0": {
+							"vector": [58.41625, -32.16098, 5.13602],
+							"easing": "easeInSine"
+						},
+						"6.0": {
 							"vector": [58.37, -34.66, 5.22],
 							"easing": "easeOutSine"
 						}
@@ -600,7 +632,7 @@
 							"easing": "linear"
 						},
 						"5.1": {
-							"vector": [-2.5, 0, -72.5],
+							"vector": [-2.48288, 4.99528, -72.71796],
 							"easing": "linear"
 						},
 						"5.2": {
@@ -608,7 +640,7 @@
 							"easing": "linear"
 						},
 						"5.3": {
-							"vector": [-2.5, 0, -72.5],
+							"vector": [-2.48288, 4.99528, -72.71796],
 							"easing": "linear"
 						},
 						"5.4": {
@@ -631,5 +663,6 @@
 				}
 			}
 		}
-	}
+	},
+	"azurelib_format_version": 2
 }

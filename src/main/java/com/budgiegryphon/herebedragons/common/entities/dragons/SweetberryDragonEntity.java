@@ -43,12 +43,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 @ParametersAreNonnullByDefault
-public class SweetberryDragonEntity extends BaseDragonEntity implements GeoEntity, IFlyingAnimal{
-	private final AnimatableInstanceCache cache = AzureLibUtil.createInstanceCache(this);
-	@Override
-	public AnimatableInstanceCache getAnimatableInstanceCache() {
-		return cache;
-	}
+public class SweetberryDragonEntity extends BaseDragonEntity implements IFlyingAnimal{
 
 	public SweetberryDragonEntity(EntityType<? extends BaseDragonEntity> type, World worldIn) {
 		super(type, worldIn);
@@ -88,22 +83,22 @@ public class SweetberryDragonEntity extends BaseDragonEntity implements GeoEntit
 		return HBDSoundEvents.SWEETBERRY_DIE.get();
 	}
 
-	@Override
-	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-		controllers.add(new AnimationController<>(this, "sweetberry", 5, event -> {
-			if (!event.isMoving() && this.isOnGround()) {
-				if(this.getState() == 1) {
-					return event.setAndContinue(RawAnimation.begin().thenLoop("animation.berrydragon.sleep"));
-				}
-				else {
-					return event.setAndContinue(RawAnimation.begin().thenLoop("animation.berrydragon.idle"));
-				}
-			}
-			else {
-				return event.setAndContinue(RawAnimation.begin().thenLoop("animation.berrydragon.fly"));
-			}
-		}));
-	}
+//	@Override
+//	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+//		controllers.add(new AnimationController<>(this, "sweetberry", 5, event -> {
+//			if (!event.isMoving() && this.isOnGround()) {
+//				if(this.getState() == 1) {
+//					return event.setAndContinue(RawAnimation.begin().thenLoop("animation.berrydragon.sleep"));
+//				}
+//				else {
+//					return event.setAndContinue(RawAnimation.begin().thenLoop("animation.berrydragon.idle"));
+//				}
+//			}
+//			else {
+//				return event.setAndContinue(RawAnimation.begin().thenLoop("animation.berrydragon.fly"));
+//			}
+//		}));
+//	}
 
 	public AgeableEntity getBreedOffspring(ServerWorld world, AgeableEntity entity) {
 		return EntityTypeInit.SWEETBERRYDRAGON_ENTITY.get().create(world);
