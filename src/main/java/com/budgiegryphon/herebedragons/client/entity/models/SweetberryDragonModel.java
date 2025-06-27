@@ -48,3 +48,4 @@ public class SweetberryDragonModel extends GeoModel<SweetberryDragonEntity> {
         }
     }
 }
+//Just keeping this here for now but it will be soon deleted
