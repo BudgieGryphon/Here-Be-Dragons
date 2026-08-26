@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "herebedragons:dragonhidescrap"
+    },
+    {
+      "item": "herebedragons:dragonhidescrap"
+    },
+    {
+      "item": "herebedragons:dragonhidescrap"
+    },
+    {
+      "item": "herebedragons:dragonhidescrap"
+    },
+    {
+      "item": "herebedragons:dragonhidescrap"
+    },
+    {
+      "item": "herebedragons:dragonhidescrap"
+    },
+    {
+      "item": "herebedragons:dragonhidescrap"
+    }
+  ],
+  "result": {
+    "item": "herebedragons:dragonhide"
+  }
+}

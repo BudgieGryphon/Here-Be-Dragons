@@ -1,0 +1,45 @@
+{
+	"item.herebedragons.dragonsight": "Dragonsight",
+	"item.herebedragons.dragonhide": "Dragonhide",
+	"item.herebedragons.dragonhidescrap": "Dragonhide Scrap",
+	"item.herebedragons.dragonsaddle": "Dragonhide Saddle",
+
+	"item.herebedragons.dragonfleshmorsel": "Dragonflesh Morsel",
+	"item.herebedragons.dragonfleshpiece": "Dragonflesh Piece",
+	"item.herebedragons.dragonfleshchunk": "Dragonflesh Chunk",
+	"item.herebedragons.cookeddragonfleshmorsel": "Cooked Dragonflesh Morsel",
+	"item.herebedragons.cookeddragonfleshpiece": "Cooked Dragonflesh Piece",
+	"item.herebedragons.cookeddragonfleshchunk": "Cooked Dragonflesh Chunk",
+	"item.herebedragons.dragonfleshdessicated": "Dessicated Dragonflesh",
+	"item.herebedragons.dragonsblood": "Dragonsblood",
+	"item.herebedragons.dragonheart": "Dragonheart",
+
+	"item.herebedragons.sweetberrydrg": "Sweetberry Dragon",
+	"item.herebedragons.glowberrydrg": "Glowberry Dragon",
+	"item.herebedragons.babysweetberrydrgitem": "Baby Sweetberry Dragon",
+	"item.herebedragons.babyglowberrydrgitem": "Baby Glowberry Dragon",
+	"item.herebedragons.roastedsweetberrydrg": "Roasted Sweetberry Dragon",
+	"item.herebedragons.roastedglowberrydrg": "Roasted Glowberry Dragon",
+	"item.herebedragons.deadsweetberrydrg": "Sweetberry Dragon",
+	"item.herebedragons.deadglowberrydrg": "Glowberry Dragon",
+
+	"item.herebedragons.sporedrakeegg": "Sporedrake Egg",
+	"item.herebedragons.gallikinegg": "Gallikin Egg",
+	"item.herebedragons.hoardstokeregg": "Hoardstoker Egg",
+
+	"item.herebedragons.mushclumpcrimson": "Crimson Mushclump",
+	"item.herebedragons.mushclumpwarped": "Warped Mushclump",
+
+	"entity.herebedragons.sweetberry_dragon": "Sweetberry Dragon",
+	"entity.herebedragons.gallikin_avern": "Gallikin Avern",
+	"entity.herebedragons.sporedrake": "Sporedrake",
+
+	"item.herebedragons.deadberrydrg.itemtext": "It's limp and still.",
+	"item.herebedragons.sporedrakeegg.itemtext": "Rounded and rusty-colored with a subtle marble pattern, near indistinguishable from a clump of netherrack.",
+	"item.herebedragons.gallikinegg.itemtext": "Long and green, darkly mottled. The shell seems sturdy, a necessary trait given its clumsy family.",
+	"item.herebedragons.hoardstokeregg.itemtext": "Paler than the gold that its parents value so, but to both of you worth far more by weight.",
+
+	"herebedragonstab": "Here Be Dragons"
+}
+
+

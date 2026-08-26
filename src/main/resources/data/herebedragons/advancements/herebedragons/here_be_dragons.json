@@ -1,0 +1,19 @@
+{
+  "display": {
+    "icon": {
+      "item": "herebedragons:deadsweetberrydrg"
+    },
+    "title": "Here Be Dragons",
+    "description": "dragons",
+    "background": "minecraft:textures/block/obsidian.png",
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "tick": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}

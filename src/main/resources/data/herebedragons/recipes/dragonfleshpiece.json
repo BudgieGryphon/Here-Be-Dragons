@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "herebedragons:dragonfleshmorsel"
+    },
+    {
+      "item": "herebedragons:dragonfleshmorsel"
+    },
+    {
+      "item": "herebedragons:dragonfleshmorsel"
+    },
+    {
+      "item": "herebedragons:dragonfleshmorsel"
+    },
+    {
+      "item": "herebedragons:dragonfleshmorsel"
+    },
+    {
+      "item": "herebedragons:dragonfleshmorsel"
+    }
+  ],
+  "result": {
+    "item": "herebedragons:dragonfleshpiece"
+  }
+}
