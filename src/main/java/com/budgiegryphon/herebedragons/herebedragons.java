@@ -1,9 +1,6 @@
 package com.budgiegryphon.herebedragons;
 
-import com.budgiegryphon.herebedragons.core.init.EnchantInit;
-import com.budgiegryphon.herebedragons.core.init.EntityTypeInit;
-import com.budgiegryphon.herebedragons.core.init.ItemInit;
-import com.budgiegryphon.herebedragons.core.init.HBDCreativeTab;
+import com.budgiegryphon.herebedragons.core.init.*;
 import com.mojang.logging.LogUtils;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -24,6 +21,7 @@ public class herebedragons
         EntityTypeInit.ENTITY_TYPES.register(modEventBus);
         EnchantInit.ENCHANTMENTS.register(modEventBus);
         HBDCreativeTab.TABS.register(modEventBus);
+        SoundInit.SOUND_EVENTS.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
         

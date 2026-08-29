@@ -7,7 +7,7 @@ import mod.azure.azurelib.animation.play_behavior.AzPlayBehaviors;
 public class SweetberryDragonDispatcher {
 
     private static final AzCommand IDLEANIM = AzCommand.create(
-            "base_controller", "idle", AzPlayBehaviors.LOOP);
+            "base_controller", "animation.berrydragon.idle", AzPlayBehaviors.LOOP);
 
     private final SweetberryDragonEntity sweetberry_dragon;
 

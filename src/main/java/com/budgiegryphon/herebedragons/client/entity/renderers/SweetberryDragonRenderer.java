@@ -4,6 +4,7 @@ import com.budgiegryphon.herebedragons.core.entities.dragons.SweetberryDragonEnt
 import com.budgiegryphon.herebedragons.client.entity.animators.SweetberryDragonAnimator;
 import mod.azure.azurelib.render.entity.AzEntityRenderer;
 import mod.azure.azurelib.render.entity.AzEntityRendererConfig;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
@@ -11,16 +12,13 @@ import net.minecraft.resources.ResourceLocation;
 
 public class SweetberryDragonRenderer extends AzEntityRenderer<SweetberryDragonEntity> {
 
-    private static final ResourceLocation MODEL = new ResourceLocation("herebedragons", "geo/berrydragon.json");
-    private static final ResourceLocation TEXTURE = new ResourceLocation("herebedragons","textures/entities/sweetberrydragon/sweetberry.png");
-    private static final ResourceLocation BABYTEXTURE = new ResourceLocation("herebedragons","textures/entities/sweetberrydragon/sweetbaby.png");
+    private static final ResourceLocation MODEL = new ResourceLocation("herebedragons", "geo/entities/berrydragon/berrydragon.geo.json");
+    private static final ResourceLocation TEXTURE = new ResourceLocation("herebedragons","textures/entities/berrydragon/sweetberry.png");
+    private static final ResourceLocation BABYTEXTURE = new ResourceLocation("herebedragons","textures/entities/berrydragon/sweetbaby.png");
 
     public SweetberryDragonRenderer(EntityRendererProvider.Context context) {
-        super(AzEntityRendererConfig.<SweetberryDragonEntity>builder(MODEL, TEXTURE).setAnimatorProvider(SweetberryDragonAnimator::new).build(), context);
+        super(AzEntityRendererConfig.<SweetberryDragonEntity>builder(MODEL, TEXTURE).setAnimatorProvider(SweetberryDragonAnimator::new)
+                .setRenderType(RenderType.entityCutoutNoCull(TEXTURE)).build(), context);
     }
 
-    @Override
-    public ResourceLocation getTextureLocation(SweetberryDragonEntity sweetberryDragonEntity) {
-        return TEXTURE;
-    }
 }
