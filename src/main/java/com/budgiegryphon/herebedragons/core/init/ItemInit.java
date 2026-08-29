@@ -1,13 +1,7 @@
 package com.budgiegryphon.herebedragons.core.init;
 
+import com.budgiegryphon.herebedragons.core.moditems.*;
 import com.budgiegryphon.herebedragons.herebedragons;
-
-import com.budgiegryphon.herebedragons.core.moditems.deadberrydrg;
-import com.budgiegryphon.herebedragons.core.moditems.dragonfleshdessicated;
-import com.budgiegryphon.herebedragons.core.moditems.dragonsblood;
-import com.budgiegryphon.herebedragons.core.moditems.gallikinegg;
-import com.budgiegryphon.herebedragons.core.moditems.sporedrakeegg;
-import com.budgiegryphon.herebedragons.core.moditems.hoardstokeregg;
 
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -24,7 +18,7 @@ public class ItemInit {
     //berrydragons
 
     public static final RegistryObject<Item> sweetberrydrgitem = ITEMS.register(
-            "sweetberrydrg", () -> new Item(new Item.Properties()
+            "sweetberrydrg", () -> new sweetberrydrg(new Item.Properties()
                     .food(new FoodProperties.Builder()
                             .nutrition(5).saturationMod(2f).meat().build()
                     ).stacksTo(16)
@@ -36,7 +30,6 @@ public class ItemInit {
                     .food(new FoodProperties.Builder()
                             .nutrition(5).saturationMod(2f).meat().build()
                     )
-                    .stacksTo(64)
             )
     );
 
@@ -56,7 +49,6 @@ public class ItemInit {
                             .nutrition(5).saturationMod(2f).meat()
                             .effect(new MobEffectInstance(MobEffects.GLOWING, 180), 1.0F).build()
                     )
-                    .stacksTo(64)
             )
     );
 
@@ -106,7 +98,6 @@ public class ItemInit {
                             .effect(new MobEffectInstance(MobEffects.HUNGER, 80), 0.4F)
                             .effect(new MobEffectInstance(MobEffects.HARM, 2), 0.25F).build()
                     )
-                    .stacksTo(64)
             )
     );
 
@@ -118,7 +109,6 @@ public class ItemInit {
                             .effect(new MobEffectInstance(MobEffects.HUNGER, 160, 1), 0.8F)
                             .effect(new MobEffectInstance(MobEffects.HARM, 2), 0.5F).build()
                     )
-                    .stacksTo(64)
             )
     );
 
@@ -130,7 +120,6 @@ public class ItemInit {
                             .effect(new MobEffectInstance(MobEffects.HUNGER, 240, 2), 0.8F)
                             .effect(new MobEffectInstance(MobEffects.HARM, 1), 1.0F).build()
                     )
-                    .stacksTo(64)
             )
     );
 
@@ -139,7 +128,6 @@ public class ItemInit {
                     .food(new FoodProperties.Builder()
                             .nutrition(3).saturationMod(1.5f).meat().build()
                     )
-                    .stacksTo(64)
             )
     );
 
@@ -148,7 +136,6 @@ public class ItemInit {
                     .food(new FoodProperties.Builder()
                             .nutrition(7).saturationMod(3.5f).meat().build()
                     )
-                    .stacksTo(64)
             )
     );
 
@@ -157,7 +144,6 @@ public class ItemInit {
                     .food(new FoodProperties.Builder()
                             .nutrition(15).saturationMod(8f).meat().build()
                     )
-                    .stacksTo(64)
             )
     );
 
@@ -167,7 +153,6 @@ public class ItemInit {
                             .nutrition(3).saturationMod(1.5f).meat()
                             .effect(new MobEffectInstance(MobEffects.WEAKNESS, 40), 1.0F).build()
                     )
-                    .stacksTo(64)
             )
     );
 
@@ -180,7 +165,6 @@ public class ItemInit {
                             .effect(new MobEffectInstance(MobEffects.HARM, 1, 1), 1.0F).build()
                     )
                     .craftRemainder(Items.GLASS_BOTTLE)
-                    .stacksTo(64)
             )
     );
 
@@ -192,54 +176,44 @@ public class ItemInit {
                             .effect(new MobEffectInstance(MobEffects.HUNGER, 240, 2), 0.8F)
                             .effect(new MobEffectInstance(MobEffects.HARM, 1), 1.0F).build()
                     )
-                    .stacksTo(64)
             )
     );
 
     //NOT foods
 
     public static final RegistryObject<Item> dragonsight = ITEMS.register(
-            "dragonsight", () -> new Item(new Item.Properties()
-            )
+            "dragonsight", () -> new Item(new Item.Properties().stacksTo(1))
     );
 
     public static final RegistryObject<Item> dragonhide = ITEMS.register(
-            "dragonhide", () -> new Item(new Item.Properties()
-            )
+            "dragonhide", () -> new Item(new Item.Properties())
     );
     public static final RegistryObject<Item> dragonhidescrap = ITEMS.register(
             "dragonhidescrap", () -> new Item(new Item.Properties()
-
             )
     );
     public static final RegistryObject<Item> dragonhidesaddle = ITEMS.register(
-            "dragonsaddle", () -> new Item(new Item.Properties()
-            )
+            "dragonsaddle", () -> new Item(new Item.Properties().stacksTo(1))
     );
 
     public static final RegistryObject<Item> mushclumpcrimson = ITEMS.register(
-            "mushclumpcrimson", () -> new Item(new Item.Properties()
-            )
+            "mushclumpcrimson", () -> new Item(new Item.Properties())
     );
 
     public static final RegistryObject<Item> mushclumpwarped = ITEMS.register(
-            "mushclumpwarped", () -> new Item(new Item.Properties()
-            )
+            "mushclumpwarped", () -> new Item(new Item.Properties())
     );
 
     //egge
     public static final RegistryObject<Item> sporedrakeegg = ITEMS.register(
-            "sporedrakeegg", () -> new sporedrakeegg(new Item.Properties()
-            )
+            "sporedrakeegg", () -> new sporedrakeegg(new Item.Properties().stacksTo(1))
     );
     public static final RegistryObject<Item> gallikinegg = ITEMS.register(
-            "gallikinegg", () -> new gallikinegg(new Item.Properties()
-            )
+            "gallikinegg", () -> new gallikinegg(new Item.Properties().stacksTo(1))
     );
 
     public static final RegistryObject<Item> hoardstokeregg = ITEMS.register(
-            "hoardstokeregg", () -> new hoardstokeregg(new Item.Properties()
-            )
+            "hoardstokeregg", () -> new hoardstokeregg(new Item.Properties().stacksTo(1))
     );
 
 }
